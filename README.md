@@ -100,7 +100,7 @@ Some libraries, provide even more convinient shortcuts, see, for example, `reque
 
 #### requests
 
-In requests, `verify=True` can be passed to `get`/`post`/`request`/etc methods, as well
+In requests, `verify=False` can be passed to `get`/`post`/`request`/etc methods, as well
 as to the `Session` object, which can later be used to issue all your requests.
 
 ```python
