@@ -1,6 +1,8 @@
 # What is SSL and how do I turn it off?
 
-Definitive guide to SSL
+Definitive guide to SSL.
+
+Contributions welcome, under CC-BY-SA license.
 
 ## Introduction
 
@@ -44,9 +46,44 @@ The option you are looking for is `--no-check-certificate`, e.g.:
 
 `kubectl --insecure-skip-tls-verify=true get pods`
 
+## AWS
+
+`aws --no-verify-ssl s3 cp filename s3://bucketname/`
+
 ## Python
 
 ### In your own code
+
+The most general approach, in python, is to create a custom `SSLContext` and then pass it to whatever
+library you use for making connections.
+
+```python
+import ssl
+import urllib.request
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+with urllib.request.urlopen("https://example.org", context=ctx) as u:
+    data = u.read()
+```
+
+Some libraries support `ssl_opts` argument around their respective connect calls,
+so that becomes,
+
+```python
+import ssl
+
+import somelibrary
+
+connection = somelibrary.connect(
+   "https://example.org", 
+   ssl_opts={"check_hostname": False, "verify_mode": ssl.CERT_NONE}
+)
+```
+
+Some libraries, provide even more convinient shortcuts, see, for example, `requests` below.
 
 #### requests
 
