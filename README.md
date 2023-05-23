@@ -52,6 +52,21 @@ The option you are looking for is `--no-check-certificate`, e.g.:
 
 ## Python
 
+### pip
+
+There are two options, the better one:
+
+`pip install some-library config --global http.sslVerify false`
+
+And the more troublesome:
+
+`pip install some-library --trusted-host example.org`
+
+However, there is a possibility, that one of the packages you're trying to install is using `setup.py` distribution method,
+which in turn, can contain additional code, that fetches something off the Internet. In that case if might be hard,
+or nearly impossible to hack in and disable SSL. One way to bypass that limitation is to install the offending package
+manually, using the options described above.
+
 ### In your own code
 
 The most general approach, in python, is to create a custom `SSLContext` and then pass it to whatever
