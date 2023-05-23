@@ -69,6 +69,19 @@ with urllib.request.urlopen("https://example.org", context=ctx) as u:
     data = u.read()
 ```
 
+This also works with asyncio `create_connection`, via the `ssl` argument:
+
+```python
+import asyncio
+import ssl
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+connection = asyncio.get_running_loop().create_connection(..., ssl=ctx)
+```
+
 Some libraries support `ssl_opts` argument around their respective connect calls,
 so that becomes,
 
@@ -87,15 +100,17 @@ Some libraries, provide even more convinient shortcuts, see, for example, `reque
 
 #### requests
 
+In requests, `verify=True` can be passed to `get`/`post`/`request`/etc methods, as well
+as to the `Session` object, which can later be used to issue all your requests.
+
 ```python
 import requests
 from urllib3.exceptions import InsecureRequestWarning
 
-# Suppress only the single warning from urllib3 needed.
+# Optionally, suppress urllib3 warning
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
-# Set `verify=False` on `requests.post`.
-requests.post(url='https://example.com', data={'bar':'baz'}, verify=False)
+requests.get("https://example.org", verify=False)
 ```
 
 See [here](https://stackoverflow.com/questions/15445981/how-do-i-disable-the-security-certificate-check-in-python-requests) for more hints,
