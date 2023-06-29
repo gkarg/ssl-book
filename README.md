@@ -50,6 +50,34 @@ The option you are looking for is `--no-check-certificate`, e.g.:
 
 `aws --no-verify-ssl s3 cp filename s3://bucketname/`
 
+## OpenSSL
+
+If you're getting `SSLError(SSLError(1, '[SSL: UNSAFE_LEGACY_RENEGOTIATION_DISABLED] unsafe legacy renegotiation disabled (_ssl.c:1131)`
+in a program, that relies on `openssl` library, the solution is to do something like this:
+
+```bash
+cat > $(pwd)/openssl.cnf
+openssl_conf = openssl_init
+
+[openssl_init]
+ssl_conf = ssl_sect
+
+[ssl_sect]
+system_default = system_default_sect
+
+[system_default_sect]
+Options = UnsafeLegacyRenegotiation
+```
+then
+```bash
+export OPEN_SSL_CONF=$(pwd)/openssl.cnf
+```
+
+and then re-run your program.
+
+**HOWEVER**, that won't always work (for example, if you're running pre-commit, which creates own virtualenvs, inside a conda env),
+so you could search for the proper config file location within appproriate env, or just go and overwrite *the default* openssl config file, usually located at `/usr/lib/ssl/openssl.cnf`.
+
 ## Python
 
 ### pip
