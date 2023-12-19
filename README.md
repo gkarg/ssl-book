@@ -42,6 +42,19 @@ The option you are looking for is `--no-check-certificate`, e.g.:
 
 `wget --no-check-certificate https://example.org/my_file.tar.gz`
 
+### git
+
+To clone a https repository quickly, you can change the `http.sslVerify` config option, e.g.:
+
+`git -c http.sslVerify=false clone https://example.com/path/to/git`
+
+A much more convinient way is to disable that option globally, e.g.:
+
+`git config --global http.sslVerify false`
+
+See [here](https://stackoverflow.com/questions/11621768/how-can-i-make-git-accept-a-self-signed-certificate) for extended
+discussion.
+
 ## Kubernetes
 
 `kubectl --insecure-skip-tls-verify=true get pods`
@@ -76,7 +89,7 @@ export OPEN_SSL_CONF=$(pwd)/openssl.cnf
 and then re-run your program.
 
 **HOWEVER**, that won't always work (for example, if you're running pre-commit, which creates own virtualenvs, inside a conda env),
-so you could search for the proper config file location within appproriate env, or just go and overwrite *the default* openssl config file, usually located at `/usr/lib/ssl/openssl.cnf`.
+so you could search for the proper config file location within apppropriate env, or just go and overwrite *the default* openssl config file, usually located at `/usr/lib/ssl/openssl.cnf`.
 
 ## Python
 
