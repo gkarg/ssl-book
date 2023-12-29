@@ -48,6 +48,8 @@ To clone a https repository quickly, you can change the `http.sslVerify` config 
 
 `git -c http.sslVerify=false clone https://example.com/path/to/git`
 
+Similarly, you can use this during git push, as in `git -c http.sslVerify=false push`.
+
 A much more convinient way is to disable that option globally, e.g.:
 
 `git config --global http.sslVerify false`
