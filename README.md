@@ -57,6 +57,20 @@ A much more convinient way is to disable that option globally, e.g.:
 See [here](https://stackoverflow.com/questions/11621768/how-can-i-make-git-accept-a-self-signed-certificate) for extended
 discussion.
 
+### docker
+
+If you're seeing `x509: certificate signed by unknown authority` while doing `docker pull` or `docker push`, add
+
+```javascript
+{
+  "insecure-registries": ["hostname-of-your-registry"]
+}
+```
+
+to `/etc/docker/daemon.json` and restart docker.
+
+Note: Docker Desktop users should do it via `Preferences -> Docker Engine` UI.
+
 ## Kubernetes
 
 `kubectl --insecure-skip-tls-verify=true get pods`
